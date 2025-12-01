@@ -31,7 +31,7 @@ int main()
         
         if(dialDirection == 'R')
         {
-            dialVal = dialVal + lineDialVal;
+            dialVal += lineDialVal;
         }
 
         dialVal = dialVal % DIAL_MAX_VAL;
