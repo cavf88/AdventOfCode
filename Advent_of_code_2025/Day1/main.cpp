@@ -14,30 +14,78 @@ int main()
     while(getline(inputFile, inputLine))
     {
         cout << inputLine << endl;
-        uint16_t lineDialVal = 0;
+        int lineDialVal = 0;
         char dialDirection;
 
         sscanf(inputLine.c_str(), "%c%d", &dialDirection, &lineDialVal);
 
         if(dialDirection == 'L')
+            lineDialVal *= -1;
+
+        const uint16_t absoluteDialVal = abs(dialVal + lineDialVal);
+        dialVal += lineDialVal;
+
+        if(dialVal < 0)
         {
-            dialVal -= lineDialVal;
-            //if(dialVal < 0)
-            //{
-            //    dialVal = DIAL_MAX_VAL + dialVal;
-            //}   
+            //uint16_t absoluteDialVal = abs(dialVal);
+            //passwordValue += absoluteDialVal / DIAL_MAX_VAL;
+            dialVal = DIAL_MAX_VAL - (absoluteDialVal % DIAL_MAX_VAL);
         }
         
-        if(dialDirection == 'R')
+        if(dialVal >= DIAL_MAX_VAL)
         {
-            dialVal += lineDialVal;
+            //uint16_t absoluteDialVal = abs(dialVal);
+            //passwordValue += absoluteDialVal / DIAL_MAX_VAL;
+            dialVal = absoluteDialVal % DIAL_MAX_VAL;
         }
 
-        dialVal = dialVal % DIAL_MAX_VAL;
+        //if(absoluteDialVal >= DIAL_MAX_VAL)
+        //    passwordValue += absoluteDialVal % DIAL_MAX_VAL;
 
         if(dialVal == 0)
             passwordValue++;
 
+
+        //if(dialVal == DIAL_MAX_VAL)
+        //{
+        //    dialVal = dialVal % DIAL_MAX_VAL;
+        //    passwordValue++;
+        //}
+        
+        cout << dialVal << endl;
+
+        //if(lineDialVal > dialVal)
+        //    dialVal += lineDialVal;
+        //else
+        //    dialVal -= lineDialVal;
+        //passwordValue += dialVal / DIAL_MAX_VAL;
+        //if(dialVal > DIAL_MAX_VAL)
+        //    dialVal = DIAL_MAX_VAL - (dialVal % DIAL_MAX_VAL);
+        //cout << dialVal << endl;
+
+
+        
+        // Old Part 1 Solution
+        //if(dialDirection == 'L')
+        //
+        //   dialVal -= lineDialVal;
+        //   //if(dialVal < 0)
+        //   //{
+        //   //    dialVal = DIAL_MAX_VAL + dialVal;
+        //   //}   
+        //
+        //
+        //f(dialDirection == 'R')
+        //
+        //   dialVal += lineDialVal;
+        //
+
+        //ialVal = dialVal % DIAL_MAX_VAL;
+        //
+        //f(dialVal == 0)
+        //
+        //   passwordValue++;
+        //
     }
 
     cout << "The final dial value is: " << dialVal << endl;
