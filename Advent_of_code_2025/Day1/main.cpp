@@ -22,11 +22,10 @@ int main()
         if(dialDirection == 'L')
         {
             dialVal -= lineDialVal;
-            if(dialVal < 0)
-            {
-                dialVal = DIAL_MAX_VAL + dialVal;
-            }
-            
+            //if(dialVal < 0)
+            //{
+            //    dialVal = DIAL_MAX_VAL + dialVal;
+            //}   
         }
         
         if(dialDirection == 'R')
