@@ -2,13 +2,14 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <regex>
 #include <string>
 #include <sstream>
 #include <vector>
 
 using namespace std;
 
-
+// PARSING
 vector<string> parseRanges(const string& line)
 {
     vector<string> parsedRange;
@@ -41,6 +42,9 @@ pair<string, string> parseRange(const string& line)
 
 }
 
+
+// PART 1
+
 const unsigned long long getInvalidIdPart1(const pair<string, string> range)
 {
     unsigned long long retVal = 0;
@@ -61,38 +65,49 @@ int main()
     string inputLine;
     fstream inputFile("input.txt");
     getline(inputFile, inputLine);
-    uint64_t invalidIdsSum = 0;
+    uint64_t invalidIdsSumPart1 = 0;
+    uint64_t invalidIdsSumPart2 = 0;
+
+    const regex expression(R"(^(\d+)\1+$)");
 
     const vector<string> ranges = parseRanges(inputLine);
 
     for(auto it = ranges.begin(); it != ranges.end(); ++it)
     {
-        //cout << *it << endl;
         pair<string, string> range = parseRange(*it);
-        //cout << range.first << "-" << range.second << endl;
 
         while(range.first != range.second)
         {
             unsigned long long firstInt = stoull(range.first.c_str(), nullptr, 0);
 
+            // Part1
             if(range.first.length() % 2 == 0)
             {
 
-                invalidIdsSum += getInvalidIdPart1(range);
+                invalidIdsSumPart1 += getInvalidIdPart1(range);
             }
-            //const long int firstInt = atol(range.first.c_str());4
+
+            // Part 2
+            {
+                smatch matchStr;
+                if(regex_match(range.first, expression))
+                {
+                    invalidIdsSumPart2 += firstInt;
+                }
+            }
+
             stringstream ss;
             ss << firstInt + 1;
             range.first = ss.str();
-            //cout << range.first << "-" << range.second << endl;
         }
         // use case last number of the range for [X, Y] instead ot [X,Y>
-        invalidIdsSum += getInvalidIdPart1(range);
+        invalidIdsSumPart1 += getInvalidIdPart1(range);
     }
 
 
     cout << inputLine << endl;
-    cout << "Values of ID: " << invalidIdsSum;
+    cout << "Part1: Values of ID: " << invalidIdsSumPart1;
+    cout << "Part2: Values of ID: " << invalidIdsSumPart2;
 
     return 0;
 }
