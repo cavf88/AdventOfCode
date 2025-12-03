@@ -53,7 +53,7 @@ const unsigned long long getInvalidIdPart1(const pair<string, string> range)
     if(firstHalf == secondHalf)
     {
         retVal = stoull(range.first.c_str(), nullptr, 0);
-        cout << "Invalid ID: " << retVal << endl;
+        //cout << "Invalid ID: " << retVal << endl;
     }
 
     return retVal;
@@ -106,8 +106,8 @@ int main()
 
 
     cout << inputLine << endl;
-    cout << "Part1: Values of ID: " << invalidIdsSumPart1;
-    cout << "Part2: Values of ID: " << invalidIdsSumPart2;
+    cout << "Part1: Values of ID: " << invalidIdsSumPart1 << endl;
+    cout << "Part2: Values of ID: " << invalidIdsSumPart2 << endl;
 
     return 0;
 }
