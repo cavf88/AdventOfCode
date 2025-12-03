@@ -32,7 +32,7 @@ int findHighestNumberInString(const string& s, const int highestNumber = 0, int 
 int main()
 {
     string inputLine;
-    fstream inputFile("test_input.txt");
+    fstream inputFile("input.txt");
     int firstHighesValPos = 0;
     int secondHighesValPos = 0;
     uint64_t sumPart1 = 0;
