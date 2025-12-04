@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 const static int MATRIX_H = 140;
 const static int MATRIX_W = 140;
@@ -41,9 +42,11 @@ int NeighboursSum(const int matrix[MATRIX_H + PADDING_SIZE][MATRIX_W + PADDING_S
 }
 
 
-int Part1(const int matrix[][MATRIX_W + PADDING_SIZE], int inputWidth, int inputHeight)
+int Part1(int matrix[][MATRIX_W + PADDING_SIZE], int inputWidth, int inputHeight, vector<int>& removeRows, vector<int>& removeCols)
 {
     int sum = 0;
+    removeRows.clear();
+    removeCols.clear();
 
     for (int i = PADDING_SIZE; i < inputWidth + PADDING_SIZE; i++)
     {
@@ -59,10 +62,15 @@ int Part1(const int matrix[][MATRIX_W + PADDING_SIZE], int inputWidth, int input
             if(NeighboursSum(matrix, i, k) < 4)
             {
                 //cout << "X";
+                // Part 2: remove the roll of paper and mark it as zero
+                //matrix[i][k] = 0; 
+                removeRows.push_back(i);
+                removeCols.push_back(k);
                 sum++; 
             }
             //else
             //{
+            //    matrix[i][k]
             //    cout << "@";
             //}
             
@@ -73,12 +81,26 @@ int Part1(const int matrix[][MATRIX_W + PADDING_SIZE], int inputWidth, int input
     return sum;
 }
 
+void RemoveValuesFromMatrix(int matrix[][MATRIX_W + PADDING_SIZE], vector<int>& removeRows, vector<int>& removeCols)
+{
+    for(int i = 0; i < removeRows.size(); i++)
+    {
+        matrix[removeRows[i]][removeCols[i]] = 0;
+    }
+
+    removeRows.clear();
+    removeCols.clear();
+}
+
 
 int main()
 {
     int matrix[MATRIX_H + PADDING_SIZE][MATRIX_W + PADDING_SIZE];
     int inputWidth = 0;
     int inputHeight = 0;
+
+    vector<int> removeRows;
+    vector<int> removeCols;
 
     string inputLine;
     fstream inputFile("input.txt");
@@ -96,9 +118,23 @@ int main()
         inputHeight++;
     }
 
-    int SumPart1 = Part1(matrix, inputWidth, inputHeight);
+    int sumPart1 = Part1(matrix, inputWidth, inputHeight, removeRows, removeCols);
+    int removedRolls = sumPart1;
+    int sumPart2 = removedRolls;
+    RemoveValuesFromMatrix(matrix, removeRows, removeCols);
+    //cout << "Removes Rolls: " << removedRolls << endl;
+    do
+    {
 
-    cout << "Part1: " << SumPart1 << endl;
+        removedRolls = Part1(matrix, inputWidth, inputHeight, removeRows, removeCols);
+        sumPart2 += removedRolls;
+        cout << "Removes Rolls: " << removedRolls << endl;
+        RemoveValuesFromMatrix(matrix, removeRows, removeCols);
+    } while (removedRolls != 0);
+    
+
+    cout << "Part1: " << sumPart1 << endl;
+    cout << "Part2: " << sumPart2 << endl;
 
     //for (int i = PADDING_SIZE; i < inputWidth + PADDING_SIZE; i++)
     //{
